@@ -39,10 +39,10 @@ def fnBubble(RList):
 
 def fnSelection(RList):
     ln = len(RList)
-    #Pre: enter a list that contains only integer
-    #post: using selection sort to sort the list from small to big
+    # Pre: enter a list that contains only integer
+    # post: using selection sort to sort the list from small to big
     
-    # Iterate over the list up to the second to last element
+    # loop over the list up to the second to last element
     for i in range(ln - 1):
         # Assume the current index is the minimum
         iMIn = i
@@ -62,8 +62,8 @@ def fnSelection(RList):
 
 
 def fnInsertion(RList):
-    #Pre: enter a list that contains only integer
-    #post: using Insertion sort to sort the list from small to big
+    # Pre: enter a list that contains only integer
+    # post: using Insertion sort to sort the list from small to big
 
     ln = len(RList)
 
@@ -74,7 +74,7 @@ def fnInsertion(RList):
         # Set the comparison index to the previous element
         j = i - 1
     
-        # Iterate over the sorted part of the list backwards
+        # loop over the sorted part of the list backwards
         while j >= 0 and target < RList[j]:
             # If the target is smaller than the current element, move the element to the right to make room for the target
             RList[j + 1] = RList[j]
@@ -86,6 +86,27 @@ def fnInsertion(RList):
 
     # Return the sorted list
     return RList
+
+def fnQuickSort(RList):
+    # Pre: enter a list that contains only integer
+    # post: using quick sort to sort the list from small to big
+
+    # If the array is empty or has only one element, it is already sorted
+    if len(RList) <= 1:
+        return RList
+
+    # Choose a pivot element from the middle of the array
+    pivot = RList[len(RList) // 2]
+
+    # Create three new lists to hold elements less than, equal to, and greater than the pivot
+    left = [x for x in RList if x < pivot]
+    middle = [x for x in RList if x == pivot]
+    right = [x for x in RList if x > pivot]
+
+    # Recursively sort the left and right lists using the same quick sort algorithm
+    # and then concatenate them with the middle list to get the final sorted array
+    return fnQuickSort(left) + middle + fnQuickSort(right)
+
 
 
 def fnBinarysearch(sortedlist, target):
@@ -121,14 +142,15 @@ def fnBinarysearch(sortedlist, target):
 
 
 
+
 def fnDisplay():
-    #Pre: none
-    #Post: Gernates a 10,000 int list, time how long it takes for each sorting algorithems to sort the list
-    #      return time and the sorted list
+    # Pre: none
+    # Post: Generates a 10,000 int list, times how long it takes for each sorting algorithm to sort the list,
+    #       and returns the time and the sorted list.
 
     RList = get_list()
 
-    #Time how long it takes for each sorting algorithems to sort the list
+    # Time how long it takes for each sorting algorithm to sort the list.
     BubbleS = time.time()
     BubleList = fnBubble(RList[:])
     BubbleF = time.time()
@@ -141,14 +163,19 @@ def fnDisplay():
     InsertionList = fnInsertion(RList[:])
     InsertionF = time.time()
 
-    # Display the result in the correct format
-    DisplayResult = f"Original List of 10,000 numbers: ({' '.join(map(str, RList[:5]))} ... {' '.join(map(str, RList[-5:]))})\n\n" \
-    f"Bubble Sort: ({' '.join(map(str, BubleList[:5]))} ... {' '.join(map(str, BubleList[-5:]))}) took {BubbleF - BubbleS} seconds \n" \
-    f"Selection Sort: ({' '.join(map(str, SelectionList[:5]))} ... {' '.join(map(str, SelectionList[-5:]))}) took {SelectionF - SelectionS} seconds \n" \
-    f"Insertion Sort: ({' '.join(map(str, InsertionList[:5]))} ... {' '.join(map(str, InsertionList[-5:]))}) took {InsertionF - InsertionS} seconds \n "
+    QuickS = time.time()
+    QuickList = fnQuickSort(RList[:])
+    QuickF = time.time()
 
-    #Return the result and the sorted list
-    return DisplayResult, BubleList
+    # Display the result in the correct format.
+    DisplayResult = f"Original List of 10,000 numbers: ({', '.join(map(str, RList[:5]))} ... {', '.join(map(str, RList[-5:]))})\n\n" \
+                    f"Bubble Sort: ({', '.join(map(str, BubleList[:5]))} ... {', '.join(map(str, BubleList[-5:]))}) took {BubbleF - BubbleS} seconds\n" \
+                    f"Selection Sort: ({', '.join(map(str, SelectionList[:5]))} ... {', '.join(map(str, SelectionList[-5:]))}) took {SelectionF - SelectionS} seconds\n" \
+                    f"Insertion Sort: ({', '.join(map(str, InsertionList[:5]))} ... {', '.join(map(str, InsertionList[-5:]))}) took {InsertionF - InsertionS} seconds\n" \
+                    f"Quick Sort: ({', '.join(map(str, QuickList[:5]))} ... {', '.join(map(str, QuickList[-5:]))}) took {QuickF - QuickS} seconds\n"
+    # Return the result and the sorted list.
+    return DisplayResult, QuickList
+
 
 #Catches the result
 resultdisplay, sorted_list = fnDisplay()
